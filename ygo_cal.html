@@ -138,13 +138,13 @@
         </el-header>
         <el-main>
             <div class="main-header">
-                <div><span>size1</span><el-input v-model="dockSize"></el-input></div>
-                <div><span>size2</span><el-input v-model="handSize"></el-input></div>
+                <div><span>dockSize</span><el-input v-model="dockSize"></el-input></div>
+                <div><span>handSize</span><el-input v-model="handSize"></el-input></div>
             </div>
             <div class="main-card">
                 <div v-for = "card in cards">
                     <el-input v-model="card[0]" ></el-input>
-                    <el-input v-model="card[1]"></el-input>
+                    <el-input v-model="card[1]" @input="changeConditionNumber(card)"></el-input>
                 </div>  
                 <div>
                     <el-button class="plus" type="info" @click="addCard"> + </el-button>
@@ -155,7 +155,7 @@
             <div class="main-content">
                 <div v-for = "condition in conditions">
                     <div v-for = "item in condition">
-                        <el-input v-model="item[0]" @change="bindnumber(item)"></el-input>
+                        <el-input v-model="item[0]" @input="bindnumber(item)"></el-input>
                         <el-input v-model="item[1]"></el-input>
                         <el-input v-model="item[2]"></el-input>
                     </div>        
@@ -165,17 +165,21 @@
                         <el-button type="info" @click="clearItem(condition)"> C </el-button>
                     </div>    
                 </div>
-                <el-button class="plus" type="info" @click="addCondition"> + </el-button>
-                <el-button type="info" @click="removeCondition"> - </el-button>
-                <el-button type="info" @click="clearCondition"> C </el-button>
+                <div>
+                    <el-button class="plus" type="info" @click="addCondition"> + </el-button>
+                    <el-button class="plus" type="info" @click="copyCondition">++</el-button>
+                    <el-button type="info" @click="removeCondition"> - </el-button>
+                    <el-button type="info" @click="clearCondition"> C </el-button>
+                </div>
+                
             </div>
             <div>
             </div>
         </el-main>
         <el-footer>
             <el-button type="info" @click="cal"> compute </el-button>
-            <div>{{cards_array}}</div>
-            <div> {{result}}</div>
+            <div><span>card:</span>{{cards_array}}</div>
+            <div><span>possiblity:</span> {{result}}</div>
         </el-footer>
     </el-container>
     </div>
@@ -210,6 +214,11 @@
             },
             clearCondition: function(){
                 this.conditions = [];
+            },
+            copyCondition(){
+                let len = this.conditions.length;
+                if(len >= 1)
+                    this.conditions.push(JSON.parse(JSON.stringify(this.conditions[len- 1])));
             },
             addItem(condition){
                 condition.push(["",3,1]);
@@ -286,6 +295,16 @@
                 }
                 // console.log(item);
                 if(flag == false) console.log("cards invalid");
+            },
+            //修改数量时条件中的数量也跟着改变
+            changeConditionNumber(card){
+                for(let condition of this.conditions){
+                    for (let item of condition){
+                        if(item[0] === card[0]){
+                            this.$set(item, 1, card[1]);
+                        }
+                    }
+                }
             }
         },
         computed:{
