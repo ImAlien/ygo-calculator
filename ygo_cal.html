@@ -155,7 +155,7 @@
             <div class="main-content">
                 <div v-for = "condition in conditions">
                     <div v-for = "item in condition">
-                        <el-input v-model="item[0]"></el-input>
+                        <el-input v-model="item[0]" @change="bindnumber(item)"></el-input>
                         <el-input v-model="item[1]"></el-input>
                         <el-input v-model="item[2]"></el-input>
                     </div>        
@@ -202,7 +202,7 @@
         },
         methods:{
             addCondition: function(){
-                console.log(this.cards_array);
+                // console.log(this.cards_array);
                 this.conditions.push([["",3,1]]);
             },
             removeCondition: function(){
@@ -275,8 +275,17 @@
                 return 0;
             },
             // 根据输入卡片绑定数量
-            bindnumber() {
-                console.log(this);
+            bindnumber(item) {
+                let flag = false;
+                for(let card of this.cards){
+                    if(card[0] == item[0]){
+                        flag = true;
+                        this.$set(item, 1, card[1]);
+                        break;
+                    }
+                }
+                // console.log(item);
+                if(flag == false) console.log("cards invalid");
             }
         },
         computed:{
