@@ -34,6 +34,9 @@
        }
        .el-header{
            background-color: #171717;
+           display:flex;
+           justify-content: center;
+           margin-top:24px;
        }
        .el-footer{
            background-color: #171717;
@@ -44,19 +47,23 @@
        }
        .main-header{
            display: flex;
+           justify-content: center;
+           margin-bottom: 24px;
        }   
        .main-header .el-input{
-           width: 100px;
+           width: 50%;
        }
        .main-card{
            display: flex;
+           justify-content: center;
            flex-wrap: wrap;
            font: 12px;
+           margin-bottom: 24px;
        }
        .main-card >div{
            display: flex;
            flex-direction: column;
-           width: 50px;
+           width: 100px;
            flex: 0 1 auto;
            margin:6px;
        }
@@ -66,17 +73,18 @@
        }
        .main-card  .el-input__inner{
            min-width: 30px;
-           height: 20px;
+           height: 30px;
            font-size: 12px;
            padding: 0px;
            text-align: center;
        }
        .main-content{
            display: flex;
+           justify-content: center;
            flex-wrap: wrap;
        }
        .main-content >div{
-           width: 120px;
+           width: 300px;
            flex: 0 1 auto;
            display: flex;
            flex-direction: column;
@@ -88,8 +96,6 @@
        }
        .main-content >div div .el-input{
            flex: 1 1 auto;
-           width: 30px;
-           height: 20px;
        }
        .main-content >.el-input{
            padding: 1px;
@@ -97,13 +103,29 @@
        }
        .main-content >div div .el-input .el-input__inner{
            width: 100%;
-           height: 20px;
+           height: 30px;
            font-size: 12px;
            padding: 0px;
            text-align: center;
        }
+       .el-footer{
+           display: flex;
+           flex-direction: column;
+           justify-content: center;
+           align-items: center;
+           margin-bottom: 24px;
+       }
        .el-footer .el-button{
-           width: 60px;
+           width: 150px;
+           height: 50px;
+           margin-bottom: 16px;
+       }
+       .el-footer .el-button >span{
+           height: 36px;
+           font-size:28px;
+       }
+       .el-footer >div{
+            margin-bottom:16px;
        }
        .el-input__inner{
            background-color: #171717;
@@ -138,7 +160,7 @@
     <div id="main">
         <el-container>
         <el-header>
-            header
+            <h3> ygo calculator</h3>
         </el-header>
         <el-main>
             <div class="main-header">
@@ -192,7 +214,7 @@
             </div>
         </el-main>
         <el-footer>
-            <el-button type="info" @click="cal"> compute </el-button>
+            <el-button type="info" @click="cal"><span class="compute-button">compute</span>  </el-button>
             <div><span>card:</span>{{cards_array}}</div>
             <div><span>possiblity:</span> {{result}}</div>
         </el-footer>
@@ -211,7 +233,10 @@
         // }
         data() {
             var intRange = (min, max) => (rule, value, callback) =>{
-                if(!Number.isInteger(value)){
+                if(typeof(value) === "string")
+                    value = parseInt(value);
+                console.log(typeof(value));
+                if(!Number.isInteger(value)) {
                     callback("请输入一个整数");
                 }
                 else{
