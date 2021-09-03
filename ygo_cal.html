@@ -247,7 +247,6 @@
                 }
             }
             return{
-                dockSize:"20",
                 handSize:"4",
                 cards:[["a",3],["b",3],["c",3],["d",3],["e",3],["f",3],["g",2]],
                 vis:[],
@@ -380,6 +379,13 @@
                     }
                 }
                 return ans;
+            },
+            dockSize(){
+                let cnt = 0;
+                for(let card of this.cards){
+                    cnt += card[1]===""? 0: Number.parseInt(card[1]);
+                }
+                return cnt;
             }
         },
         //同步form中的data与Vue的data
@@ -389,11 +395,14 @@
                 console.log(val);
             },
             'data.handSize'(val){
-                this.dockSize = val;
+                this.handSize = val;
             },
             'data.cards'(val){
                 this.cards = val;
                 console.log(this.cards.toString());
+            },
+            dockSize(val){
+                this.data.dockSize = val;
             }
         }
     }
